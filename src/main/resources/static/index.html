@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chatting App</title>
+  <link rel="stylesheet" href="css/normalize.min.css">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+  <link rel='stylesheet prefetch' href='css/jquery.mCustomScrollbar.min.css'>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="chat">
+  <div class="chat-title">
+    <h1 id="full-name"></h1>
+    <h2 id="nick-name"></h2>
+    <figure class="avatar">
+      <img id="user-img" src=""/></figure>
+  </div>
+  <div class="messages">
+    <div class="messages-content"></div>
+  </div>
+  <div class="message-box">
+    <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
+    <button type="submit" class="message-submit">Send</button>
+    <button type="submit" class="message-file" onclick="getFile();">file</button>
+  </div>
+  <div style='height: 0px;width: 0px; overflow:hidden;'><input id="upfile" type="file" onchange="sub()"/></div>
+
+</div>
+<div class="bg"></div>
+<script src='js/jquery.min.js'></script>
+<script src='js/jquery.mCustomScrollbar.concat.min.js'></script>
+<script src="js/index.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</body>
+</html>
