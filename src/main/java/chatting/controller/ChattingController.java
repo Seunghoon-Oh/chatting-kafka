@@ -1,8 +1,8 @@
 package chatting.controller;
 
-import model.ChattingMessage;
-import chatting.kafka.consumer.Receiver;
-import chatting.kafka.producer.Sender;
+import chatting.model.ChattingMessage;
+import chatting.service.Receiver;
+import chatting.service.Sender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

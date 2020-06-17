@@ -1,4 +1,4 @@
-package model;
+package chatting.model;
 
 public class ChattingMessage {
 
@@ -43,8 +43,7 @@ public class ChattingMessage {
         this.rawData = rawData;
     }
 
-    public ChattingMessage() {
-    }
+    public ChattingMessage() {}
 
     public ChattingMessage(String fileName, byte[] rawData) {
         this.fileName = fileName;

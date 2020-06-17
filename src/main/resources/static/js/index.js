@@ -72,7 +72,7 @@ function insertMessage() {
     return false;
   }
   stompClient.send("/app/message", {}, JSON.stringify({ 'message': msg, 'from': userInfo[1].toLowerCase(), 'to': friendInfo[1].toLowerCase() }));
-  showMessage(userInfo[0], msg)
+  showOwnMessage(userInfo[0], msg)
   $('.message-input').val(null);
 }
 
@@ -120,7 +120,7 @@ function connect() {
           var data = JSON.parse(greeting.body);
           console.log(data);
           if(data.message != null){
-            showMessage(data.from, data.message);
+            showFriendMessage(data.from, data.message);
           } else {
             localStorage.setItem(data.fileName, data.rawData);
             showMessage2(data.from, data.fileName, data.rawData);
@@ -143,13 +143,8 @@ function saveFile(fileName) {
     window.URL.revokeObjectURL(url);
 }
 
-function showMessage(user, message) {
-  if(user == userInfo[0]){
-    $('<div class="message message-personal">' + message + '</div>').appendTo($('.mCSB_container')).addClass('new');
-    setDate();
-    updateScrollbar();
-  }else{
-    var friendImgSrc = "img/" + friendInfo[2];
+function showFriendMessage(user, message) {
+ var friendImgSrc = "img/" + friendInfo[2];
     $('<div class="message loading new"><figure class="avatar"><img src=\''+friendImgSrc+'\'/></figure><span></span></div>').appendTo($('.mCSB_container'));
     updateScrollbar();
     setTimeout(function() {
@@ -158,8 +153,13 @@ function showMessage(user, message) {
       setDate();
       updateScrollbar();
       i++;
-      }, 1000 + (Math.random() * 20) * 100);
-  }
+    }, 1000 + (Math.random() * 20) * 100);
+}
+
+function showOwnMessage(user, message) {
+ $('<div class="message message-personal">' + message + '</div>').appendTo($('.mCSB_container')).addClass('new');
+   setDate();
+   updateScrollbar();
 }
 
 function showMessage2(user, fileName, rawData) {

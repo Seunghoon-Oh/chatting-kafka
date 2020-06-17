@@ -1,4 +1,4 @@
-package chatting.kafka.producer;
+package chatting.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
