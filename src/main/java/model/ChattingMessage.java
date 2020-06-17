@@ -1,25 +1,27 @@
-package chatting;
+package model;
 
 public class ChattingMessage {
 
     private String message;
-    private String user;
+    private String from;
+    private String to;
 
-    public String getUser() {
-        return user;
+    public String getFrom() {
+        return from;
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public ChattingMessage(String message, String user) {
-        this.user = user;
+    public ChattingMessage(String from, String to, String message) {
+        this.from = from;
         this.message = message;
+        this.to = to;
     }
 
     private String fileName;
@@ -49,10 +51,10 @@ public class ChattingMessage {
         this.rawData = rawData;
     }
 
-    public ChattingMessage(String fileName, byte[] rawData, String user) {
+    public ChattingMessage(String fileName, byte[] rawData, String from) {
         this.fileName = fileName;
         this.rawData = rawData;
-        this.user = user;
+        this.from = from;
     }
 
     public ChattingMessage(String message) {
@@ -63,4 +65,11 @@ public class ChattingMessage {
         return message;
     }
 
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
 }

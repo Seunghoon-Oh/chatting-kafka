@@ -1,4 +1,4 @@
-package chatting.kafka.producer;
+package chatting.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

@@ -2,7 +2,7 @@ var user;
 $(function(){
   user = prompt("Please enter your name.", "steve");
 
-  if(user != "steve" && user != "bread"){
+  if(user != "steve" && user != "bread" && user != "pepito"){
    alert(user + " is an unauthorized user!!");
    window.close();
   }else{
@@ -26,8 +26,9 @@ $( window ).ready(function() {
 });
 
 var info = [
-  'Brad Pitt|Bread|profile-80.jpg',
-  'Seunghoon Oh|Steve|steve.jpg'
+  'Brad Pitt|Bread|profile-80.jpg', // sends messages to steve // Brad only should see messages from steve
+  'Seunghoon Oh|Steve|steve.jpg', // sends messages to brad
+  'Pepito Los Palotes|Pepito|steve.jpg' // sends messages to Brad
 ]
 
 var userInfo;
@@ -40,9 +41,12 @@ function setInfo() {
   if(user == "steve"){
     friendInfo = info[0].split('|');
     userInfo = info[1].split('|');
-  }else{
+  }else if (user == "bread"){
     friendInfo = info[1].split('|');
     userInfo = info[0].split('|');
+  } else {
+    friendInfo = info[0].split('|');
+    userInfo = info[2].split('|');
   }
   document.getElementById("full-name").innerHTML = friendInfo[0];
   document.getElementById("nick-name").innerHTML = friendInfo[1];
@@ -58,10 +62,8 @@ function updateScrollbar() {
 
 function setDate(){
   d = new Date()
-//  if (m != d.getMinutes()) {
-    m = d.getMinutes();
-    $('<div class="timestamp">' + d.getHours() + ':' + m + '</div>').appendTo($('.message:last'));
-//  }
+  m = d.getMinutes();
+  $('<div class="timestamp">' + d.getHours() + ':' + m + '</div>').appendTo($('.message:last'));
 }
 
 function insertMessage() {
@@ -69,7 +71,8 @@ function insertMessage() {
   if ($.trim(msg) == '') {
     return false;
   }
-  stompClient.send("/app/message", {}, JSON.stringify({ 'message': msg, 'user': userInfo[0] }));
+  stompClient.send("/app/message", {}, JSON.stringify({ 'message': msg, 'from': userInfo[1].toLowerCase(), 'to': friendInfo[1].toLowerCase() }));
+  showMessage(userInfo[0], msg)
   $('.message-input').val(null);
 }
 
@@ -112,15 +115,15 @@ function connect() {
   var socket = new SockJS('/chatting');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
-      stompClient.subscribe('/topic/chatting', function (greeting) {
+      stompClient.subscribe('/user/' + friendInfo[1].toLowerCase() +'/queue/chatting', function (greeting) {
           console.log(greeting);
           var data = JSON.parse(greeting.body);
           console.log(data);
           if(data.message != null){
-            showMessage(data.user, data.message);
+            showMessage(data.from, data.message);
           } else {
             localStorage.setItem(data.fileName, data.rawData);
-            showMessage2(data.user, data.fileName, data.rawData);
+            showMessage2(data.from, data.fileName, data.rawData);
           }
        });
   });
@@ -146,7 +149,7 @@ function showMessage(user, message) {
     setDate();
     updateScrollbar();
   }else{
-    var friendImgSrc = "img/"+friendInfo[2];
+    var friendImgSrc = "img/" + friendInfo[2];
     $('<div class="message loading new"><figure class="avatar"><img src=\''+friendImgSrc+'\'/></figure><span></span></div>').appendTo($('.mCSB_container'));
     updateScrollbar();
     setTimeout(function() {
@@ -177,12 +180,3 @@ function showMessage2(user, fileName, rawData) {
       }, 1000 + (Math.random() * 20) * 100);
   }
 }
-//
-//$(function () {
-//    $("form").on('submit', function (e) {
-//        e.preventDefault();
-//    });
-//    $( "#connect" ).click(function() { connect(); });
-//    $( "#disconnect" ).click(function() { disconnect(); });
-//    $( "#send" ).click(function() { sendName(); });
-//});

@@ -1,6 +1,6 @@
 package chatting.kafka.consumer;
 
-import chatting.ChattingMessage;
+import model.ChattingMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,9 @@ public class Receiver {
     public void receive(ConsumerRecord<?, ?> consumerRecord) throws Exception {
         LOGGER.info("received data='{}'", consumerRecord.toString());
         String[] message = consumerRecord.value().toString().split("\\|");
-        LOGGER.info("message='{}'", Arrays.toString(message));
-        this.template.convertAndSend("/topic/chatting", new ChattingMessage(message[0], message[1]));
+        String destination = "/user/" + message[1] + "/queue/chatting";
+        LOGGER.info("sending message='{}' to destination={}", Arrays.toString(message), destination);
+        this.template.convertAndSend(destination, new ChattingMessage(message[1], message[2], message[0]));
         latch.countDown();
     }
 }
